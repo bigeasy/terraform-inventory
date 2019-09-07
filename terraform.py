@@ -371,11 +371,11 @@ class AnsibleGroup(object):
 
 def _execute_shell():
     encoding = 'utf-8'
-    tf_workspace = [TERRAFORM_PATH, 'workspace', 'select', TERRAFORM_WS_NAME]
+    tf_workspace = [TERRAFORM_PATH, 'workspace', 'select', '-no-color', TERRAFORM_WS_NAME]
     proc_ws = Popen(tf_workspace, cwd=TERRAFORM_DIR, stdout=PIPE,
                     stderr=PIPE, universal_newlines=True)
     _, err_ws = proc_ws.communicate()
-    if err_ws != '':
+    if not (err_ws == '' or err_ws == 'workspaces not supported\n'):
         sys.stderr.write(str(err_ws)+'\n')
         sys.exit(1)
     else:
